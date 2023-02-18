@@ -1,25 +1,31 @@
 pipeline {
     agent any
-    stages {
-        stage('Build') {
-            steps {
-                build job: 'PES2UG20CS033-1'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh '/var/jenkins_home/workspace/PES2UG20CS033-1/main/hello_exec'
-            }
-        }
-      stage('Deploy') {
-            steps {
-                echo 'Deployment Successful'
-            }
-        }
+
+stages{
+  stage('Build') {
+    steps{
+      sh 'g++ -o PES2UG20CS033 PES2UG20CS033.cpp'
+       build job: 'PES2UG20CS033-1'
     }
-    post{
-      failure{
-          echo 'pipeline failed'
-      }
+  }
+
+  stage('Test') {
+    steps{
+       sh './PES2UG20CS033'
+        
     }
+  }
+
+  stage('Deploy') {
+    steps{
+      echo 'DEPLOYMENT SUCCESSFUL'
+    }
+  }
 }
+post {
+    failure {
+        echo 'Pipeline Failed'
+    }
+  }
+}
+
